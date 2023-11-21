@@ -7,7 +7,6 @@ from werkzeug.security import generate_password_hash,check_password_hash
 
 from flask_login import login_required,logout_user,login_user,login_manager,LoginManager,current_user
 
-# from flask_mail import Mail
 import json
 
 
@@ -17,32 +16,17 @@ app=Flask(__name__)
 app.secret_key="aneesrehmankhan"
 
 
-# with open('config.json','r') as c:
-#     params=json.load(c)["params"]
-
-
-
-# app.config.update(
-#     MAIL_SERVER='smtp.gmail.com',
-#     MAIL_PORT='465',
-#     MAIL_USE_SSL=True,
-#     MAIL_USERNAME='gmail account',
-#     MAIL_PASSWORD='gmail account password'
-# )
-# mail = Mail(app)
-
-
 
 # this is for getting the unique user access
 login_manager=LoginManager(app)
 login_manager.login_view='login'
 
 # app.config['SQLALCHEMY_DATABASE_URI']='mysql://username:password@localhost/databsename'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:PFH#23kgrw9@localhost/covid'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:PFH#23kgrw9@localhost/covid2'
 db=SQLAlchemy(app)
 
 
-
+#used to reload the user login details present in the session
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id)) or Hospitaluser.query.get(int(user_id))
