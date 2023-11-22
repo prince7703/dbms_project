@@ -11,6 +11,7 @@ import json
 
 
 # mydatabase connection
+
 local_server=True
 app=Flask(__name__)
 app.secret_key="aneesrehmankhan"
@@ -18,15 +19,18 @@ app.secret_key="aneesrehmankhan"
 
 
 # this is for getting the unique user access
+
 login_manager=LoginManager(app)
 login_manager.login_view='login'
 
 # app.config['SQLALCHEMY_DATABASE_URI']='mysql://username:password@localhost/databsename'
+
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:PFH#23kgrw9@localhost/covid2'
 db=SQLAlchemy(app)
 
 
 #used to reload the user login details present in the session
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id)) or Hospitaluser.query.get(int(user_id))
@@ -217,7 +221,7 @@ def test():
     except Exception as e:
         print(e)
         return f'MY DATABASE IS NOT CONNECTED {e}'
-
+#admin logout
 @app.route("/logoutadmin")
 def logoutadmin():
     session.pop('user')
@@ -229,7 +233,7 @@ def logoutadmin():
 def updatess(code):
     postsdata=Hospitaldata.query.filter_by(hcode=code).first()
     return render_template("hospitaldata.html",postsdata=postsdata)
-
+#add hospital data
 @app.route("/addhospitalinfo",methods=['POST','GET'])
 def addhospitalinfo():
     email=current_user.email
@@ -268,7 +272,7 @@ def addhospitalinfo():
 
     return render_template("hospitaldata.html",postsdata=postsdata)
 
-
+# edit hospital information
 @app.route("/hedit/<string:id>",methods=['POST','GET'])
 @login_required
 def hedit(id):
@@ -297,7 +301,7 @@ def hedit(id):
     # posts=Hospitaldata.query.filter_by(id=id).first()
     return render_template("hedit.html",posts=posts)
 
-
+#delete hospital info
 @app.route("/hdelete/<string:id>",methods=['POST','GET'])
 @login_required
 def hdelete(id):
@@ -308,7 +312,7 @@ def hdelete(id):
     flash("Date Deleted","danger")
     return redirect("/addhospitalinfo")
 
-
+#patient details
 @app.route("/pdetails",methods=['GET'])
 @login_required
 def pdetails():
@@ -317,7 +321,7 @@ def pdetails():
     data=Bookingpatient.query.filter_by(srfid=code).first()
     return render_template("detials.html",data=data)
 
-
+#bed slot booking
 @app.route("/slotbooking", methods=['POST', 'GET'])
 @login_required
 def slotbooking():
